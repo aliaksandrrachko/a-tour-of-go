@@ -33,8 +33,10 @@ func flowControlStatments() {
 	)
 
 	// loops and functions
-	// TODO:
-
+	SqrtByScale(12341.422, 0.9999999)
+	Sqrt(256)
+	Sqrt(1564817)
+	SqrtByScale(156481234, 0.9999999)
 }
 
 func sqrt(x float64) string {
@@ -52,4 +54,22 @@ func pow(x, n, lim float64) float64 {
 	}
 	// can't use v here, though
 	return lim
+}
+
+/* Returns the square root calculated by Newton's method */
+func Sqrt(x float64) float64 {
+	return SqrtByScale(x, float64(1))
+}
+
+/* Returns the square root calculated by Newton's method with scale*/
+func SqrtByScale(x, scale float64) float64 {
+	result := x / 2
+
+	for currentScale := float64(1); currentScale > 1-scale && result > 0; currentScale = (result*result - x) / x {
+		result = 0.5 * (result + x/result)
+	}
+
+	fmt.Println("Sqrt '", x, "' = ", result, "; ", result, " * ", result, " = ", result*result)
+
+	return result
 }
