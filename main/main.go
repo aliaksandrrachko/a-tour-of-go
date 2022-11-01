@@ -15,5 +15,9 @@ func main() {
 	flowControlStatments()
 	fmt.Printf("\n\n\n\n")
 
+	fmt.Println("=======================================================")
+	fmt.Println("-- Basics: More types: structs, slices, and maps")
+	fmt.Println("=======================================================")
 	moreTypes()
+	fmt.Printf("\n\n\n\n")
 }

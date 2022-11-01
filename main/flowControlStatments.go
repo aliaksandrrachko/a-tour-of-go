@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"math"
+	"runtime"
+	"time"
 )
 
 func flowControlStatments() {
@@ -33,8 +35,43 @@ func flowControlStatments() {
 	)
 
 	// loops and functions
-	// TODO:
+	SqrtByScale(12341.422, 0.9999999)
+	Sqrt(256)
+	Sqrt(1564817)
+	SqrtByScale(156481234, 0.9999999)
 
+	// switch statemets
+	fmt.Println("Go runs on ")
+	switch os := runtime.GOOS; os {
+	case "darwin":
+		fmt.Println("OS X.")
+	case "linux":
+		fmt.Println("Linux.")
+	default:
+		// freebsd, openbsd,
+		// plan0, windows...
+		fmt.Printf("%s. \n", os)
+	}
+
+	// switch with no conditions
+	t := time.Now()
+	switch {
+	case t.Hour() < 12:
+		fmt.Println("Good morning!")
+	case t.Hour() < 17:
+		fmt.Println("Good afternoon.")
+	default:
+		fmt.Println("Good evening.")
+	}
+
+	// defer - deffers the xecution until the surrounding function returns
+	defer fmt.Println("world")
+
+	// stacking defers
+	for i := 0; i < 10; i++ {
+		defer fmt.Println(i)
+	}
+	fmt.Println("done")
 }
 
 func sqrt(x float64) string {
@@ -52,4 +89,22 @@ func pow(x, n, lim float64) float64 {
 	}
 	// can't use v here, though
 	return lim
+}
+
+/* Returns the square root calculated by Newton's method */
+func Sqrt(x float64) float64 {
+	return SqrtByScale(x, float64(1))
+}
+
+/* Returns the square root calculated by Newton's method with scale*/
+func SqrtByScale(x, scale float64) float64 {
+	result := x / 2
+
+	for currentScale := float64(1); currentScale > 1-scale && result > 0; currentScale = (result*result - x) / x {
+		result = 0.5 * (result + x/result)
+	}
+
+	fmt.Println("Sqrt '", x, "' = ", result, "; ", result, " * ", result, " = ", result*result)
+
+	return result
 }
