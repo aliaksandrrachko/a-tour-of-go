@@ -10,7 +10,7 @@ import (
 )
 
 func moreTypes() {
-  // pointers
+	// pointers
 	i, j := 42, 2701
 
 	p := &i         // point to i
@@ -232,8 +232,8 @@ func moreTypes() {
 	delete(testMap, "Answer") // delete an
 	fmt.Println("The value:", testMap["Answer"])
 
-	v, ok := testMap["Answer"] // test that a key is present
-	fmt.Println("The value:", v, "Present?", ok)
+	intValue, ok := testMap["Answer"] // test that a key is present
+	fmt.Println("The value:", intValue, "Present?", ok)
 
 	// Exercise: Maps
 	wc.Test(WordCount)
@@ -328,3 +328,4 @@ func WordCount(s string) map[string]int {
 
 func compute(fn func(float64, float64) float64) float64 {
 	return fn(3, 4)
+}
