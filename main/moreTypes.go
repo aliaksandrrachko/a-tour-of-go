@@ -10,7 +10,7 @@ import (
 )
 
 func moreTypes() {
-	// pointers
+	// Pointers
 	i, j := 42, 2701
 
 	p := &i         // point to i
@@ -22,7 +22,7 @@ func moreTypes() {
 	*p = *p / 37   // divide j through the pinter
 	fmt.Println(j) // see the new value of j
 
-	// structs - is a collection of fields
+	// Structs - is a collection of fields
 	v := Vertex{1, 2}
 	v.X = 4
 	fmt.Println(v)
@@ -33,14 +33,14 @@ func moreTypes() {
 	vertexPointer.X = 1e9
 	fmt.Println(v)
 
-	// strict literals
+	// Strict Literals
 	v1 := Vertex{1, 2}                // has type Vertex
 	v2 := Vertex{X: 1}                /// Y:0 is implict
 	v3 := Vertex{}                    // X:0 and Y:0
 	vertexPointerTwo := &Vertex{1, 2} // has type *Vertex
 	fmt.Println(v1, v2, v3, vertexPointerTwo)
 
-	// arrays
+	// Arrays
 	var arrayFirst [2]string
 	arrayFirst[0] = "Hello"
 	arrayFirst[1] = "World"
@@ -50,7 +50,7 @@ func moreTypes() {
 	primes := [6]int{2, 3, 4, 5, 7, 11}
 	fmt.Println(primes)
 
-	// slices
+	// Slices
 	var sliceFirst []int = primes[1:4]
 	fmt.Println(sliceFirst)
 
@@ -70,7 +70,7 @@ func moreTypes() {
 	fmt.Println(sliseOfNamesArray, sliseOfNamesArrayTwo)
 	fmt.Println(sliseOfNamesArray)
 
-	// sliece literals
+	// Sliece literals
 	numbersArray := []int{2, 3, 5, 7, 11, 13}
 	fmt.Println(numbersArray)
 
@@ -90,7 +90,7 @@ func moreTypes() {
 	}
 	fmt.Println(arrayOfStruct)
 
-	// slice defaults
+	// Slice defaults
 	arraySliceDefaultExample := []int{2, 3, 4, 5, 214, 4, 24}
 
 	sliceDefaultExmpaleOne := arraySliceDefaultExample[1:4]
@@ -102,13 +102,13 @@ func moreTypes() {
 	sliceDefaultExmpaleThree := arraySliceDefaultExample[1:]
 	fmt.Println(sliceDefaultExmpaleThree)
 
-	// slice length and capacity
+	// Slice length and capacity
 	printSliceSimple(arraySliceDefaultExample)
 	printSliceSimple(sliceDefaultExmpaleOne)
 	printSliceSimple(sliceDefaultExmpaleTwo)
 	printSliceSimple(sliceDefaultExmpaleThree)
 
-	// nil slices
+	// Nil slices
 	var nullSlice []int
 	printSliceSimple(nullSlice)
 	if nullSlice == nil {
@@ -247,7 +247,20 @@ func moreTypes() {
 	fmt.Println(compute(hypot))
 	fmt.Println(compute(math.Pow))
 
-	// Function closures
+	// Function closures (closure - закрытие, заверешние, прекращение)
+	positiveValue, negativeValue := adder(), adder()
+	for i := 0; i < 10; i++ {
+		fmt.Println(
+			positiveValue(i),
+			negativeValue(-1*i),
+		)
+	}
+
+	// Exerscise: Fibonacci closure
+	fibonacciClosure := fibonacci()
+	for i := 0; i < 10; i++ {
+		fmt.Println(fibonacciClosure())
+	}
 
 }
 
@@ -328,4 +341,28 @@ func WordCount(s string) map[string]int {
 
 func compute(fn func(float64, float64) float64) float64 {
 	return fn(3, 4)
+}
+
+func adder() func(int) int {
+	sum := 0
+	return func(x int) int {
+		sum += x
+		return sum
+	}
+}
+
+// fibonacci is a function that returns
+// a function that returns an int.
+// Implement a fibonacci function that returns a function (a closure) that returns successive fibonacci numbers (0, 1, 1, 2, 3, 5, ...).
+// https://en.wikipedia.org/wiki/Fibonacci_number
+// Fn = Fn-1 + Fn-2
+func fibonacci() func() int {
+	var n int
+	n1, n2 := -1, 1
+	return func() int {
+		n = n1 + n2
+		n1 = n
+		n2 = n1
+		return n
+	}
 }
