@@ -12,7 +12,7 @@ func main() {
 	fmt.Println("=======================================================")
 	fmt.Println("-- Basics: Flow control statemsnts: for, if, else, witch and defer")
 	fmt.Println("=======================================================")
-	flowControlStatments()
+	flowControlStatements()
 	fmt.Printf("\n\n\n\n")
 
 	fmt.Println("=======================================================")

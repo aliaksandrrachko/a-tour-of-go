@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func flowControlStatments() {
+func flowControlStatements() {
 
 	// for:
 	sum := 0

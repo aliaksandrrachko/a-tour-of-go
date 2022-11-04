@@ -357,12 +357,11 @@ func adder() func(int) int {
 // https://en.wikipedia.org/wiki/Fibonacci_number
 // Fn = Fn-1 + Fn-2
 func fibonacci() func() int {
-	var n int
 	n1, n2 := -1, 1
 	return func() int {
-		n = n1 + n2
-		n1 = n
-		n2 = n1
-		return n
+		result := n1 + n2
+		n1 = n2
+		n2 = result
+		return result
 	}
 }
