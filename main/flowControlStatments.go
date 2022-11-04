@@ -40,7 +40,7 @@ func flowControlStatements() {
 	Sqrt(1564817)
 	SqrtByScale(156481234, 0.9999999)
 
-	// switch statemets
+	// switch statements
 	fmt.Println("Go runs on ")
 	switch os := runtime.GOOS; os {
 	case "darwin":
@@ -64,7 +64,7 @@ func flowControlStatements() {
 		fmt.Println("Good evening.")
 	}
 
-	// defer - deffers the xecution until the surrounding function returns
+	// defer - deffer the execution until the surrounding function returns
 	defer fmt.Println("world")
 
 	// stacking defers

@@ -4,20 +4,26 @@ import "fmt"
 
 func main() {
 	fmt.Println("=======================================================")
-	fmt.Println("-- Basics: Packages, variables, and funcions.")
+	fmt.Println("-- Basics: Packages, variables, and functions.")
 	fmt.Println("=======================================================")
-	pakcagesVariablesFunctions()
+	packagesVariablesFunctions()
 	fmt.Printf("\n\n\n\n")
 
 	fmt.Println("=======================================================")
-	fmt.Println("-- Basics: Flow control statemsnts: for, if, else, witch and defer")
+	fmt.Println("-- Basics: Flow control statements: for, if, else, witch and defer")
 	fmt.Println("=======================================================")
 	flowControlStatements()
 	fmt.Printf("\n\n\n\n")
 
 	fmt.Println("=======================================================")
-	fmt.Println("-- Basics: More types: structs, slices, and maps")
+	fmt.Println("-- Basics: More types: struct, slices, and maps")
 	fmt.Println("=======================================================")
 	moreTypes()
+	fmt.Printf("\n\n\n\n")
+
+	fmt.Println("=======================================================")
+	fmt.Println("-- Methods and interfaces: Methods and interfaces")
+	fmt.Println("=======================================================")
+	methodsAndInterfaces()
 	fmt.Printf("\n\n\n\n")
 }

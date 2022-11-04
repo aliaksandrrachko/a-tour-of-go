@@ -35,7 +35,7 @@ var (
 	z      complex128 = cmplx.Sqrt(-5 + 12i)
 )
 
-func pakcagesVariablesFunctions() {
+func packagesVariablesFunctions() {
 	fmt.Println("Welcome to the playground!")
 	fmt.Println("Hello, 世界")
 	fmt.Println("The time is", time.Now())

@@ -22,20 +22,20 @@ func moreTypes() {
 	*p = *p / 37   // divide j through the pinter
 	fmt.Println(j) // see the new value of j
 
-	// Structs - is a collection of fields
+	// Struct - is a collection of fields
 	v := Vertex{1, 2}
 	v.X = 4
 	fmt.Println(v)
 	fmt.Println(v.X)
 
-	// structs pinter
+	// struct pinter
 	vertexPointer := &v
 	vertexPointer.X = 1e9
 	fmt.Println(v)
 
 	// Strict Literals
 	v1 := Vertex{1, 2}                // has type Vertex
-	v2 := Vertex{X: 1}                /// Y:0 is implict
+	v2 := Vertex{X: 1}                /// Y:0 is implicit
 	v3 := Vertex{}                    // X:0 and Y:0
 	vertexPointerTwo := &Vertex{1, 2} // has type *Vertex
 	fmt.Println(v1, v2, v3, vertexPointerTwo)
@@ -56,26 +56,26 @@ func moreTypes() {
 
 	namesArray := [4]string{
 		"John",
-		"Payl",
+		"Paly",
 		"George",
 		"Ringo",
 	}
 	fmt.Println(namesArray)
 
-	sliseOfNamesArray := namesArray[0:2]
-	sliseOfNamesArrayTwo := namesArray[1:3]
-	fmt.Println(sliseOfNamesArray, sliseOfNamesArrayTwo)
+	sliceOfNamesArray := namesArray[0:2]
+	sliceOfNamesArrayTwo := namesArray[1:3]
+	fmt.Println(sliceOfNamesArray, sliceOfNamesArrayTwo)
 
-	sliseOfNamesArrayTwo[0] = "XXX"
-	fmt.Println(sliseOfNamesArray, sliseOfNamesArrayTwo)
-	fmt.Println(sliseOfNamesArray)
+	sliceOfNamesArrayTwo[0] = "XXX"
+	fmt.Println(sliceOfNamesArray, sliceOfNamesArrayTwo)
+	fmt.Println(sliceOfNamesArray)
 
-	// Sliece literals
+	// Slice literals
 	numbersArray := []int{2, 3, 5, 7, 11, 13}
 	fmt.Println(numbersArray)
 
-	boleanArray := []bool{true, false, true, true, false, true}
-	fmt.Println(boleanArray)
+	booleanArray := []bool{true, false, true, true, false, true}
+	fmt.Println(booleanArray)
 
 	arrayOfStruct := []struct {
 		i int
@@ -93,20 +93,20 @@ func moreTypes() {
 	// Slice defaults
 	arraySliceDefaultExample := []int{2, 3, 4, 5, 214, 4, 24}
 
-	sliceDefaultExmpaleOne := arraySliceDefaultExample[1:4]
-	fmt.Println(sliceDefaultExmpaleOne)
+	sliceDefaultExampleOne := arraySliceDefaultExample[1:4]
+	fmt.Println(sliceDefaultExampleOne)
 
-	sliceDefaultExmpaleTwo := arraySliceDefaultExample[:4]
-	fmt.Println(sliceDefaultExmpaleTwo)
+	sliceDefaultExampleTwo := arraySliceDefaultExample[:4]
+	fmt.Println(sliceDefaultExampleTwo)
 
-	sliceDefaultExmpaleThree := arraySliceDefaultExample[1:]
-	fmt.Println(sliceDefaultExmpaleThree)
+	sliceDefaultExampleThree := arraySliceDefaultExample[1:]
+	fmt.Println(sliceDefaultExampleThree)
 
 	// Slice length and capacity
 	printSliceSimple(arraySliceDefaultExample)
-	printSliceSimple(sliceDefaultExmpaleOne)
-	printSliceSimple(sliceDefaultExmpaleTwo)
-	printSliceSimple(sliceDefaultExmpaleThree)
+	printSliceSimple(sliceDefaultExampleOne)
+	printSliceSimple(sliceDefaultExampleTwo)
+	printSliceSimple(sliceDefaultExampleThree)
 
 	// Nil slices
 	var nullSlice []int
@@ -169,12 +169,12 @@ func moreTypes() {
 	testSliceForTestArray[1] = 124413
 	// value in testArray will be changed
 	// because testSliceForTestArray links on testArray
-	printSlice("testSliceForTestArrayAfterModifing", testArray[:])
+	printSlice("testSliceForTestArrayAfterModifying", testArray[:])
 
 	testSliceForTestArray = append(testSliceForTestArray, 1, 41, 41, 12)
 	testSliceForTestArray[0] = 1234
 	// value in testArray won't be changed
-	// because after appen was created new array an values was coppied
+	// because after append was created new array an values was coppiced
 	printSlice("testSliceForTestArrayAfterAppending", testArray[:])
 
 	// Range
@@ -256,7 +256,7 @@ func moreTypes() {
 		)
 	}
 
-	// Exerscise: Fibonacci closure
+	// Exercise: Fibonacci closure
 	fibonacciClosure := fibonacci()
 	for i := 0; i < 10; i++ {
 		fmt.Println(fibonacciClosure())
