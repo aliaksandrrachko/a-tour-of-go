@@ -163,6 +163,16 @@ func methodsAndInterfaces() {
 
 	// Exercise: Readers
 	reader.Validate(MyReader{})
+
+	// Exercise: rot13Reader
+	testRot13ReaderString := strings.NewReader("Lbh penpxrq gur pbqr!")
+	testRot13ReaderR := rot13Reader{testRot13ReaderString}
+	fmt.Println(testRot13ReaderR)
+	// io.Copy(os.Stdout, &testRot13ReaderR)
+}
+
+type rot13Reader struct {
+	r io.Reader
 }
 
 type VertexFloat struct {
