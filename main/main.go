@@ -26,4 +26,10 @@ func main() {
 	fmt.Println("=======================================================")
 	methodsAndInterfaces()
 	fmt.Printf("\n\n\n\n")
+
+	fmt.Println("=======================================================")
+	fmt.Println("-- Generics: Generics")
+	fmt.Println("=======================================================")
+	generics()
+	fmt.Printf("\n\n\n\n")
 }
