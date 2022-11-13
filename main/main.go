@@ -32,4 +32,10 @@ func main() {
 	fmt.Println("=======================================================")
 	generics()
 	fmt.Printf("\n\n\n\n")
+
+	fmt.Println("=======================================================")
+	fmt.Println("-- Concurrency: Concurrency")
+	fmt.Println("=======================================================")
+	concurrency()
+	fmt.Printf("\n\n\n\n")
 }

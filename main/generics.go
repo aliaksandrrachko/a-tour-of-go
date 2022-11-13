@@ -36,7 +36,11 @@ type List[T any] struct {
 }
 
 func (list List[T]) String() string {
-	return fmt.Sprintf("{\"val\":\"%s\",\"next\":\"%s\"}", list.val, list.next)
+	return fmt.Sprintf(
+		"{\"val\":\"%v\",\"next\":%v}",
+		list.val,
+		list.next,
+	)
 }
 
 func (list *List[T]) add(o T) *List[T] {
