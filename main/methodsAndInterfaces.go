@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"math"
+	"os"
 	"strings"
 	"time"
 
@@ -165,14 +166,43 @@ func methodsAndInterfaces() {
 	reader.Validate(MyReader{})
 
 	// Exercise: rot13Reader
-	testRot13ReaderString := strings.NewReader("Lbh penpxrq gur pbqr!")
+	testRot13ReaderString := strings.NewReader("Lbh penpxrq gur pbqr! You cracked the code!")
 	testRot13ReaderR := rot13Reader{testRot13ReaderString}
-	fmt.Println(testRot13ReaderR)
-	// io.Copy(os.Stdout, &testRot13ReaderR)
+	io.Copy(os.Stdout, &testRot13ReaderR)
 }
 
 type rot13Reader struct {
 	r io.Reader
+}
+
+func (reader rot13Reader) Read(p []byte) (n int, err error) {
+	n, err = reader.r.Read(p)
+	str := string(p[:n])
+	rot13ByteArray := []byte(strings.Map(rot13, str))
+	for i := 0; i < n; i++ {
+		p[i] = rot13ByteArray[i]
+	}
+	return
+}
+
+func rot13(r rune) rune {
+	if r >= 'a' && r <= 'z' {
+		// Rotate lowercase letters 13 places.
+		if r >= 'm' {
+			return r - 13
+		} else {
+			return r + 13
+		}
+	} else if r >= 'A' && r <= 'Z' {
+		// Rotate uppercase letters 13 places.
+		if r >= 'M' {
+			return r - 13
+		} else {
+			return r + 13
+		}
+	}
+	// Do nothing.
+	return r
 }
 
 type VertexFloat struct {
