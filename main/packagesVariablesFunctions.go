@@ -36,6 +36,8 @@ var (
 )
 
 func packagesVariablesFunctions() {
+	fmt.Println(c, python, java)
+
 	fmt.Println("Welcome to the playground!")
 	fmt.Println("Hello, 世界")
 	fmt.Println("The time is", time.Now())
@@ -68,4 +70,6 @@ func packagesVariablesFunctions() {
 	var f5 float64 = math.Sqrt(float64(x5*x5 + y5*y5))
 	var z5 uint = uint(f5)
 	fmt.Println(x5, y5, z5)
+
+	fmt.Println(split(14))
 }
