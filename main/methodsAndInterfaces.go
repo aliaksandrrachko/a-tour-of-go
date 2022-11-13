@@ -2,12 +2,15 @@ package main
 
 import (
 	"fmt"
+	"image"
+	"image/color"
 	"io"
 	"math"
 	"os"
 	"strings"
 	"time"
 
+	"golang.org/x/tour/pic"
 	"golang.org/x/tour/reader"
 )
 
@@ -169,7 +172,37 @@ func methodsAndInterfaces() {
 	testRot13ReaderString := strings.NewReader("Lbh penpxrq gur pbqr! You cracked the code!")
 	testRot13ReaderR := rot13Reader{testRot13ReaderString}
 	io.Copy(os.Stdout, &testRot13ReaderR)
+
+	// Images
+	rectangle := image.NewRGBA(image.Rect(0, 0, 100, 100))
+	fmt.Println(rectangle.Bounds())
+	fmt.Println(rectangle.At(0, 0).RGBA())
+
+	// Exercise: Images
+	myImage := Image{11, 12, 13}
+	pic.ShowImage(myImage)
 }
+
+/* ==== Exercise: Images ==== */
+
+type Image struct {
+	w, h  int
+	color uint8
+}
+
+func (img Image) ColorModel() color.Model {
+	return color.RGBAModel
+}
+
+func (img Image) Bounds() image.Rectangle {
+	return image.Rect(0, 0, img.w, img.h)
+}
+
+func (img Image) At(x, y int) color.Color {
+	return color.RGBA{img.color + uint8(x), img.color + uint8(y), 255, 255}
+}
+
+/* ========================== */
 
 type rot13Reader struct {
 	r io.Reader
