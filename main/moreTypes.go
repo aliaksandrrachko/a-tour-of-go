@@ -201,10 +201,10 @@ func moreTypes() {
 
 	// Map literals
 	stringVertexBigMap = map[string]VertexBig{
-		"Bell Labs": VertexBig{
+		"Bell Labs": {
 			40.68433, -74.39967,
 		},
-		"Google": VertexBig{
+		"Google": {
 			37.42202, -122.08408,
 		},
 	}
@@ -274,8 +274,8 @@ func printSlice(s string, x []int) {
 }
 
 func printSliceOfSlice(s string, x [][]string) {
-	header := s + ":\n"
-	fmt.Printf(header)
+	header := fmt.Sprintf("%s:\n", s)
+	fmt.Printf("%s:\n", s)
 	for i := 0; i < len(x); i++ {
 		fmt.Printf("%s|%s|\n", getEmptyString(len(header)), strings.Join(x[i], " "))
 	}
