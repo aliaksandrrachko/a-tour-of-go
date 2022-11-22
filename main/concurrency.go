@@ -24,6 +24,48 @@ func concurrency() {
 	fmt.Println(x, y, x+y)
 
 	// Buffered Channels
+	bufferedChannelExample := make(chan int, 2)
+	bufferedChannelExample <- 1
+	bufferedChannelExample <- 2
+	fmt.Println(<-bufferedChannelExample)
+	fmt.Println(<-bufferedChannelExample)
+
+	// Range and Close
+	fibonacciChan := make(chan int, 10)
+	go fibonacciWithChan(cap(fibonacciChan), fibonacciChan)
+	for i := range fibonacciChan {
+		fmt.Println(i)
+	}
+
+	// Select
+	fibonacciChanForSelectExample := make(chan int)
+	quitChan := make(chan int)
+	go func() {
+		for i := 0; i < 10; i++ {
+			fmt.Println(<-fibonacciChanForSelectExample)
+		}
+		quitChan <- 0
+	}()
+	fibonacciWithChanAndSelect(fibonacciChanForSelectExample, quitChan)
+
+	// Default Selection
+	tickDefaultSelection := time.Tick(100 * time.Millisecond)
+	boomDefaultSelection := time.After(500 * time.Millisecond)
+	for {
+		select {
+		case <-tickDefaultSelection:
+			fmt.Println("tick.")
+		case <-boomDefaultSelection:
+			fmt.Println("BOOM!")
+			return
+		default:
+			fmt.Println("    .")
+			time.Sleep(50 * time.Millisecond)
+		}
+	}
+
+	// Exercise: Equivalent Binary Trees
+
 }
 
 func say(s string) {
@@ -39,4 +81,26 @@ func sum(s []int, c chan int) {
 		sum += v
 	}
 	c <- sum // send sum to c
+}
+
+func fibonacciWithChan(n int, c chan int) {
+	x, y := 0, 1
+	for i := 0; i < n; i++ {
+		c <- x
+		x, y = y, x+y
+	}
+	close(c)
+}
+
+func fibonacciWithChanAndSelect(c, quit chan int) {
+	x, y := 0, 1
+	for {
+		select {
+		case c <- x:
+			x, y = y, x+y
+		case <-quit:
+			fmt.Println("quit")
+			return
+		}
+	}
 }
