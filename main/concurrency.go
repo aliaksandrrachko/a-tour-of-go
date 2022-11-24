@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"time"
+
+	"golang.org/x/tour/tree"
 )
 
 func concurrency() {
@@ -49,6 +51,24 @@ func concurrency() {
 	fibonacciWithChanAndSelect(fibonacciChanForSelectExample, quitChan)
 
 	// Default Selection
+	DefaultSelection()
+
+	// Exercise: Equivalent Binary Trees
+	channelForRandomBinaryTree := make(chan int)
+	go Walk(tree.New(1), channelForRandomBinaryTree)
+	for i := range channelForRandomBinaryTree {
+		fmt.Println(i)
+	}
+
+	fmt.Println(
+		Same(tree.New(1), tree.New(1)),
+	)
+	fmt.Println(
+		Same(tree.New(1), tree.New(2)),
+	)
+}
+
+func DefaultSelection() bool {
 	tickDefaultSelection := time.Tick(100 * time.Millisecond)
 	boomDefaultSelection := time.After(500 * time.Millisecond)
 	for {
@@ -57,15 +77,12 @@ func concurrency() {
 			fmt.Println("tick.")
 		case <-boomDefaultSelection:
 			fmt.Println("BOOM!")
-			return
+			return true
 		default:
 			fmt.Println("    .")
 			time.Sleep(50 * time.Millisecond)
 		}
 	}
-
-	// Exercise: Equivalent Binary Trees
-
 }
 
 func say(s string) {
@@ -103,4 +120,38 @@ func fibonacciWithChanAndSelect(c, quit chan int) {
 			return
 		}
 	}
+}
+
+// Walk walks the three t sending all values
+// from the three to the change ch.
+func Walk(t *tree.Tree, ch chan int) {
+	WalkRecursive(t, ch)
+	close(ch)
+}
+
+func WalkRecursive(t *tree.Tree, ch chan int) {
+	if t != nil {
+		WalkRecursive(t.Left, ch)
+		ch <- t.Value
+		WalkRecursive(t.Right, ch)
+	}
+}
+
+// Same determines whether the trees
+// t1 and t2 contain the same values.
+func Same(t1, t2 *tree.Tree) bool {
+	ch1, ch2 := make(chan int), make(chan int)
+	go Walk(t1, ch1)
+	go Walk(t2, ch2)
+	for {
+		n1, ok1 := <-ch1
+		n2, ok2 := <-ch2
+		if ok1 != ok2 || n1 != n2 {
+			return false
+		}
+		if !ok1 {
+			break
+		}
+	}
+	return true
 }
