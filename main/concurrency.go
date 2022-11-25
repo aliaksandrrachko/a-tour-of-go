@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sync"
 	"time"
 
 	"golang.org/x/tour/tree"
@@ -66,6 +67,20 @@ func concurrency() {
 	fmt.Println(
 		Same(tree.New(1), tree.New(2)),
 	)
+
+	// sync.Mutex
+	safeCounter := SafeCounter{v: make(map[string]int)}
+	for i := 0; i < 1000; i++ {
+		go safeCounter.Inc("someKey")
+	}
+
+	time.Sleep(time.Second)
+	fmt.Println(safeCounter.Value("someKey"))
+
+	// Exercise: Web Crawler
+	Crawl("https://golang.org/", 4, fetcher)
+
+	fmt.Println("Finish")
 }
 
 func DefaultSelection() bool {
@@ -154,4 +169,147 @@ func Same(t1, t2 *tree.Tree) bool {
 		}
 	}
 	return true
+}
+
+// SafeCounter is safe to use concurrently.
+type SafeCounter struct {
+	mu sync.Mutex
+	v  map[string]int
+}
+
+// Inc increments the counter for the given key.
+func (c *SafeCounter) Inc(key string) {
+	c.mu.Lock()
+	// Lock so only one goroutine at a time can access the map.c.v.
+	c.v[key]++
+	c.mu.Unlock()
+}
+
+// Value returns the current value of the counter for the given key.
+func (c *SafeCounter) Value(key string) int {
+	c.mu.Lock()
+	// Lock so only one goroutine at a time can access the map c.v.
+	defer c.mu.Unlock()
+	return c.v[key]
+}
+
+type Fetcher interface {
+	// Fetch returns the body of URL and
+	// a slice of URLs found on that page.
+	Fetch(url string) (body string, urls []string, err error)
+}
+
+// Crawl uses fetcher to recursively crawl
+// pages starting with url, to a maximum of depth.
+func Crawl(url string, depth int, fetcher Fetcher) {
+	// TODO: Fetch URLs in parallel.
+	// TODO: Don't fetch the same URL twice.
+	// This implementation doesn't do either:
+	cash := ConcurrentMap{v: make(map[string]FetchResult)}
+	var wg sync.WaitGroup
+
+	RecursiveCrawl(url, depth, fetcher, &cash, &wg)
+	wg.Wait()
+}
+
+func RecursiveCrawl(url string, depth int,
+	fetcher Fetcher,
+	cash *ConcurrentMap,
+	wg *sync.WaitGroup) {
+	wg.Add(1)
+	defer wg.Done()
+	if depth <= 0 {
+		return
+	}
+	if cash.ContainsKey(url) {
+		return
+	}
+
+	body, urls, err := fetcher.Fetch(url)
+	fetchResult := FetchResult{body, urls, err}
+	if fetchResult.err != nil {
+		fmt.Println(fetchResult.err)
+		return
+	}
+	cash.Put(url, fetchResult)
+	fmt.Printf("found: %s %q\n", url, fetchResult.body)
+	for _, u := range fetchResult.urls {
+		RecursiveCrawl(u, depth-1, fetcher, cash, wg)
+	}
+}
+
+// ConcurrentMap
+type ConcurrentMap struct {
+	mu sync.Mutex
+	v  map[string]FetchResult
+}
+
+func (c *ConcurrentMap) Put(key string, value FetchResult) {
+	c.mu.Lock()
+	c.v[key] = value
+	c.mu.Unlock()
+}
+
+func (c *ConcurrentMap) ContainsKey(key string) bool {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	if _, ok := c.v[key]; ok {
+		return true
+	}
+	return false
+}
+
+type FetchResult struct {
+	body string
+	urls []string
+	err  error
+}
+
+// fakeFetcher is Fetcher that returns canned results.
+type fakeFetcher map[string]*fakeResult
+
+type fakeResult struct {
+	body string
+	urls []string
+}
+
+func (f fakeFetcher) Fetch(url string) (string, []string, error) {
+	if res, ok := f[url]; ok {
+		return res.body, res.urls, nil
+	}
+	return "", nil, fmt.Errorf("not found: %s", url)
+}
+
+// fetcher is a populated fakeFetcher.
+var fetcher = fakeFetcher{
+	"https://golang.org/": &fakeResult{
+		"The Go Programming Language",
+		[]string{
+			"https://golang.org/pkg/",
+			"https://golang.org/cmd/",
+		},
+	},
+	"https://golang.org/pkg/": &fakeResult{
+		"Packages",
+		[]string{
+			"https://golang.org/",
+			"https://golang.org/cmd/",
+			"https://golang.org/pkg/fmt/",
+			"https://golang.org/pkg/os/",
+		},
+	},
+	"https://golang.org/pkg/fmt/": &fakeResult{
+		"Package fmt",
+		[]string{
+			"https://golang.org/",
+			"https://golang.org/pkg/",
+		},
+	},
+	"https://golang.org/pkg/os/": &fakeResult{
+		"Package os",
+		[]string{
+			"https://golang.org/",
+			"https://golang.org/pkg/",
+		},
+	},
 }
