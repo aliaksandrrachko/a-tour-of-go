@@ -1,4 +1,7 @@
 go 1.19
 
-use ./tour
-use ./web-service-gin
+use (
+	./tour
+	./generics
+	./web-service-gin
+)
