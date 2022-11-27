@@ -1,4 +1,4 @@
-module io.github.aliaksandrrachko/atourofgo
+module io.github.aliaksandrrachko/a-tour-of-go
 
 go 1.19
 
