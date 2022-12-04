@@ -1,8 +1,9 @@
 go 1.19
 
 use (
- 	./fuzz
-	./tour
+	./gowiki
+	./fuzz
 	./generics
+	./tour
 	./web-service-gin
 )
